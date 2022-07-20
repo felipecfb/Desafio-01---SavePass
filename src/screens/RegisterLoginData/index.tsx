@@ -50,22 +50,22 @@ export function RegisterLoginData() {
   });
 
   async function handleRegister(formData: FormData) {
-    const dataKey = "@savepass:logins";
-
     const newLoginData = {
       id: String(uuid.v4()),
       ...formData,
     };
 
-    const data = await AsyncStorage.getItem(dataKey);
-    if (data) {
-      const parsedData = JSON.parse(data);
-      const newData = [...parsedData, newLoginData];
-      await AsyncStorage.setItem(dataKey, JSON.stringify(newData));
-    }
+    const dataKey = "@savepass:logins";
 
-    await AsyncStorage.setItem(dataKey, JSON.stringify(newLoginData));
+    const response = await AsyncStorage.getItem(dataKey);
+    const parsedData = JSON.parse(response) || [];
+
+    const newLoginListData = [...parsedData, newLoginData];
+
+    await AsyncStorage.setItem(dataKey, JSON.stringify(newLoginListData));
+
     navigate("Home");
+
     // Save data on AsyncStorage and navigate to 'Home' screen
   }
 
@@ -95,6 +95,7 @@ export function RegisterLoginData() {
             title="E-mail ou usuário"
             name="email"
             error={
+              // Replace here with real content
               errors.email && errors.email.message
             }
             control={control}
@@ -107,6 +108,7 @@ export function RegisterLoginData() {
             title="Senha"
             name="password"
             error={
+              // Replace here with real content
               errors.password && errors.password.message
             }
             control={control}
